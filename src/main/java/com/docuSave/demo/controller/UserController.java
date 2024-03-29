@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.docuSave.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.User;
-import com.example.demo.service.UserService;
+import com.docuSave.demo.model.User;
+import com.docuSave.demo.service.UserService;
 
 @RestController
 public class UserController {
@@ -24,19 +24,20 @@ public class UserController {
         new User("Purvy", 67890, "purvy@gmail", "p@123")
     ));
     
-    @GetMapping("/hello")
+    @GetMapping({"/","/home"})
     public String greet(){
-        return "Hello Hotie!";
+        return "Welcome!";
     }
 
     @GetMapping("/getUsers")
     public List<User> getUsers(){
-        return users;
+        return service.findAll();
     }
 
     @PostMapping("/SignUpForm")
     public void addUsers(@RequestBody User user){
         service.saveUser(user);
+        System.out.println("User Added successfully!"); 
     }
 
     @PostMapping("/LoginForm")

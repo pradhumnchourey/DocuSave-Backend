@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.docuSave.demo.model;
 
 import java.util.Collection;
 import java.util.Collections;

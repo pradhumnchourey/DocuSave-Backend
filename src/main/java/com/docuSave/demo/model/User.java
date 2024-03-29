@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.docuSave.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class User {
     private String name;
-    private long number;
+    private long phoneNumber;
     @Id
     private String email;
     private String password;
