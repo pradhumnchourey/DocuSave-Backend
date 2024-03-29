@@ -42,7 +42,7 @@ public class UserController {
 
     @PostMapping("/LoginForm")
     public String login(@RequestParam String username, @RequestParam String password){
-        
-        return "redirect:/hello";
+        return "Logged in.";
+        // return "redirect:/home";
     }
 }

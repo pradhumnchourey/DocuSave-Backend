@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/SignUpForm")).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(org.springframework.security.config.Customizer.withDefaults())
-                .formLogin(login -> login.loginPage("/Login"));
+                .formLogin(login -> login.loginPage("/LoginForm"));
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
