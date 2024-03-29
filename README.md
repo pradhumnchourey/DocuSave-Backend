@@ -6,3 +6,4 @@ Problems:
 Date 29/03/2024:
 1. Removed security for Sign Up Form.
 2. Set up default form login to "/Login".
+3. Can also work on two-factor authentication.
