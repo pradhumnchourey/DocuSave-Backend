@@ -33,17 +33,30 @@ public class UserController {
 
     @PostMapping("/SignUpForm")
     public ResponseEntity<String> signup(@RequestBody User user){
-        userService.saveUser(user.getName(), user.getPhoneNumber(), user.getEmail(), user.getPassword());
-        return ResponseEntity.status(HttpStatus.CREATED).body("User sign up successful.");
+        try {
+            userService.createUser(user); // Call separate method in userService
+            return ResponseEntity.status(HttpStatus.CREATED).body("User sign up successful.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) { // Handle other potential exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        
+        // userService.saveUser(user.getName(), user.getPhoneNumber(), user.getEmail(), user.getPassword());
+        // return ResponseEntity.status(HttpStatus.CREATED).body("User sign up successful.");
     }
 
     @PostMapping("/LoginForm")
     public ResponseEntity<?> login(@RequestBody User user) {
         // Perform validation and error handling if needed
+        if (user.getEmail() == null || user.getEmail().isEmpty() ||
+                user.getPassword() == null || user.getPassword().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid credentials");
+        }
 
         User loggedInUser = userService.getUserByEmailAndPassword(user.getEmail(), user.getPassword());
         if(loggedInUser != null){
-            return ResponseEntity.ok(loggedInUser);
+            return ResponseEntity.ok(loggedInUser.getName());
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

@@ -1,6 +1,7 @@
 package com.docuSave.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,13 +18,14 @@ public class UserService {
     
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
-    public User saveUser(String name, long phoneNumber, String email, String password){
-        if(userRepository.findByEmail(email)!=null){
+    public User createUser(User user){
+        if(userRepository.findByEmail(user.getEmail())!=null){
             throw new IllegalArgumentException("User with same already exists!");
         }
-        String hashedPassword = passwordEncoder.encode(password);
-        User newUser = new User(name, phoneNumber, email, hashedPassword);
-        return userRepository.save(newUser);
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        // User newUser = new User(name, phoneNumber, email, hashedPassword);
+        user.setPassword(hashedPassword);
+        return userRepository.save(user);
     }
     
     public User getUserByEmailAndPassword(String email, String password) {
