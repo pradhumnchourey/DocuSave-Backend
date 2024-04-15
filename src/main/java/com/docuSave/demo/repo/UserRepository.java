@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.docuSave.demo.model.User;
 
 @Repository
-public interface UserRepo extends JpaRepository<User, String>{
+public interface UserRepository extends JpaRepository<User, Integer>{
+
+    User findByEmail(String email);
 
 }

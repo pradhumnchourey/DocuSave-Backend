@@ -8,25 +8,23 @@ import org.springframework.stereotype.Service;
 
 import com.docuSave.demo.model.User;
 import com.docuSave.demo.model.UserPrincipal;
-import com.docuSave.demo.repo.UserRepo;
+import com.docuSave.demo.repo.UserRepository;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService{
+public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepo repo;
+    private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = repo.findById(username).orElse(null);
+        User user = userRepository.findByEmail(email);
 
-        if(user==null){
-            System.out.println("User Not Found!");
+        if (user == null) {
+            System.out.println("Invalid username or password!");
             throw new UsernameNotFoundException("User not found!");
         }
-
         return new UserPrincipal(user);
     }
-
 }

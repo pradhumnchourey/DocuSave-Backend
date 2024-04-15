@@ -4,11 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class docuSave {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-		System.out.println("Hello Kitty!");
+		SpringApplication.run(docuSave.class, args);
+		System.out.println("Yay No Errors..");
 	}
 
 }
