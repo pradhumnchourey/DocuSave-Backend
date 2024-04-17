@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     public User createUser(User user){
         if(userRepository.findByEmail(user.getEmail())!=null){
-            throw new IllegalArgumentException("User with same already exists!");
+            throw new DataIntegrityViolationException("User with same already exists!");
         }
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         // User newUser = new User(name, phoneNumber, email, hashedPassword);
@@ -30,7 +31,7 @@ public class UserService {
     
     public User getUserByEmailAndPassword(String email, String password) {
         User user = userRepository.findByEmail(email);
-        if(user != null & passwordEncoder.matches(password, user.getPassword())){
+        if(user != null && passwordEncoder.matches(password, user.getPassword())){
             return user;
         }
         return null;
