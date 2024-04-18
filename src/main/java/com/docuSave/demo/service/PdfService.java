@@ -36,7 +36,8 @@ public class PdfService {
         return pdfRepository.findById(pdfId).orElse(null);
     }
 
-    public List<PdfFile> getPdfFiles(){
-        return pdfRepository.findAll();
+    public List<PdfFile> getPdfByUserId(int userId) {
+        return pdfRepository.findByUserId(userId);
     }
+
 }

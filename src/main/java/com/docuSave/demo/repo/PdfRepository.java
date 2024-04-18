@@ -11,6 +11,6 @@ import com.docuSave.demo.model.User;
 public interface PdfRepository extends JpaRepository<PdfFile, Long>{
     List<PdfFile> findByUser(User user);
 
-    @Query("SELECT fileName FROM PdfFile fileName JOIN FETCH fileName.user")
-    List<PdfFile> findAllWithUser();
+    @Query("SELECT pdf FROM PdfFile pdf WHERE pdf.user.userId = :userId")
+    List<PdfFile> findByUserId(int userId);
 }

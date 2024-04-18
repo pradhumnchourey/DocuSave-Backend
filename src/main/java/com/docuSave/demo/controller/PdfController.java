@@ -1,6 +1,9 @@
 package com.docuSave.demo.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.docuSave.demo.model.DocList;
 import com.docuSave.demo.model.PdfFile;
 import com.docuSave.demo.service.PdfService;
 
@@ -24,6 +28,16 @@ public class PdfController {
     @Autowired
     private PdfService pdfService;
 
+    @GetMapping("/documents")
+    public List<DocList> getPdfDocs(int userId){
+        List<PdfFile> pdffiles = pdfService.getPdfByUserId(userId);
+        List<DocList> docLists = new ArrayList<>();
+        for(PdfFile pdfFile: pdffiles){
+            docLists.add(new DocList(pdfFile.getFileId(), pdfFile.getFileName(), pdfFile.getDocType()));
+        }
+        return docLists;
+    }
+    
     @PostMapping("/upload")
     public ResponseEntity<String> uploadPdf(@RequestParam("doc") MultipartFile file, @RequestParam("docType") String docType, @RequestParam("docName") String docName, @RequestParam("userId") int userId) {
 
