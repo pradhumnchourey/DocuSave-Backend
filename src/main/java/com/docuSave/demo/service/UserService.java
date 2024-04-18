@@ -1,7 +1,6 @@
 package com.docuSave.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,5 +38,9 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public User findByEmail(String string) {
+        return userRepository.findByEmail(string);
     }
 }

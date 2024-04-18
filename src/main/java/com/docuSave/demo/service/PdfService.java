@@ -1,5 +1,6 @@
 package com.docuSave.demo.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,7 @@ public class PdfService {
         return pdfRepository.findById(pdfId).orElse(null);
     }
 
-
+    public List<PdfFile> getPdfFiles(){
+        return pdfRepository.findAll();
+    }
 }
