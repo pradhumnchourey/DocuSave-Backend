@@ -8,7 +8,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DocList {
-    private long fileId;
-    private String fileName;
+    private long docId;
+    private String docName;
     private String docType;
+    private String docUri;
+    private int userId;
+
+    public DocList(long docId, String docName, String docType, String docUri) {
+        this.docId = docId;
+        this.docName = docName;
+        this.docType = docType;
+        this.docUri = docUri;
+    }
 }

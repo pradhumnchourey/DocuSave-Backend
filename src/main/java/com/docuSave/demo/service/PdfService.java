@@ -20,10 +20,10 @@ public class PdfService {
     @Autowired
     private UserRepository userRepository;
 
-    public void savePdf(String originalFilename, byte[] content, String docType, int userId) {
+    public void savePdf(String originalFilename, String docType, String docUri, int userId) {
         PdfFile pdfFile = new PdfFile();
         pdfFile.setFileName(originalFilename);
-        pdfFile.setContent(content);
+        pdfFile.setDocUri(docUri);
         pdfFile.setDocType(docType);
 
         Optional<User> user = userRepository.findById(userId);
@@ -38,6 +38,14 @@ public class PdfService {
 
     public List<PdfFile> getPdfByUserId(int userId) {
         return pdfRepository.findByUserId(userId);
+    }
+
+    public boolean deleteDocument(long docId) {
+        if (pdfRepository.existsById(docId)) {
+            pdfRepository.deleteById(docId);
+            return true;
+        }
+        return false;
     }
 
 }

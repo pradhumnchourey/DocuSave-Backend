@@ -1,77 +1,80 @@
 package com.docuSave.demo.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.docuSave.demo.model.DocList;
 import com.docuSave.demo.model.PdfFile;
 import com.docuSave.demo.service.PdfService;
 
 @RestController
+@CrossOrigin("http://192.168.29.43:8080")
 // @RequestMapping("/api/pdf")
 public class PdfController {
 
     @Autowired
     private PdfService pdfService;
 
-    @GetMapping("/documents")
-    public List<DocList> getPdfDocs(int userId){
+    @GetMapping("/documents/{userId}")
+    public List<DocList> getPdfDocs(@PathVariable int userId) {
+        // int userId1 = Integer.parseInt(userId);
         List<PdfFile> pdffiles = pdfService.getPdfByUserId(userId);
         List<DocList> docLists = new ArrayList<>();
-        for(PdfFile pdfFile: pdffiles){
-            docLists.add(new DocList(pdfFile.getFileId(), pdfFile.getFileName(), pdfFile.getDocType()));
+        for (PdfFile pdfFile : pdffiles) {
+            docLists.add(new DocList(pdfFile.getFileId(), pdfFile.getFileName(), pdfFile.getDocType(), pdfFile.getDocUri()));
         }
         return docLists;
     }
-    
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadPdf(@RequestParam("doc") MultipartFile file, @RequestParam("docType") String docType, @RequestParam("docName") String docName, @RequestParam("userId") int userId) {
 
-        if (file.isEmpty()) {
+    @DeleteMapping("/documents/{docId}")
+    public ResponseEntity<String> deleteDocument(@PathVariable long docId) {
+        boolean deleted = pdfService.deleteDocument(docId);
+        if (deleted) {
+            return ResponseEntity.ok("Document deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Document not found");
+        }
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadPdf(@RequestBody DocList formData){
+        String docUri = formData.getDocUri();
+        if (docUri==null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload");
         }
-        try {
-            byte[] content = file.getBytes();
-            pdfService.savePdf(docName, content, docType, userId);
-
-            return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file.");
-        }
+        pdfService.savePdf(formData.getDocName(), formData.getDocType(), docUri, formData.getUserId());
+        return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
     }
 
-    @GetMapping("/download/{pdfId}")
-    public ResponseEntity<ByteArrayResource> downloadPdf(@PathVariable long pdfId) {
-        PdfFile pdfFile = pdfService.getPdfById(pdfId);
+    // @GetMapping("/download/{pdfId}")
+    // public ResponseEntity<ByteArrayResource> downloadPdf(@PathVariable long pdfId) {
+    //     PdfFile pdfFile = pdfService.getPdfById(pdfId);
 
-        if (pdfFile == null) {
-            return ResponseEntity.notFound().build();
-        }
+    //     if (pdfFile == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_PDF);
-        httpHeaders.setContentDispositionFormData("attachment", pdfFile.getFileName());
+    //     HttpHeaders httpHeaders = new HttpHeaders();
+    //     httpHeaders.setContentType(MediaType.APPLICATION_PDF);
+    //     httpHeaders.setContentDispositionFormData("attachment", pdfFile.getFileName());
 
-        ByteArrayResource resource = new ByteArrayResource(pdfFile.getContent());
+    //     ByteArrayResource resource = new ByteArrayResource(pdfFile.getContent());
 
-        return ResponseEntity.ok()
-                .headers(httpHeaders)
-                .contentLength(pdfFile.getContent().length)
-                .body(resource);
-    }
+    //     return ResponseEntity.ok()
+    //             .headers(httpHeaders)
+    //             .contentLength(pdfFile.getContent().length)
+    //             .body(resource);
+    // }
 
 }
