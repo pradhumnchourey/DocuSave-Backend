@@ -20,7 +20,6 @@ import com.docuSave.demo.service.PdfService;
 
 @RestController
 @CrossOrigin("http://192.168.29.43:8080")
-// @RequestMapping("/api/pdf")
 public class PdfController {
 
     @Autowired
@@ -28,7 +27,6 @@ public class PdfController {
 
     @GetMapping("/documents/{userId}")
     public List<DocList> getPdfDocs(@PathVariable int userId) {
-        // int userId1 = Integer.parseInt(userId);
         List<PdfFile> pdffiles = pdfService.getPdfByUserId(userId);
         List<DocList> docLists = new ArrayList<>();
         for (PdfFile pdfFile : pdffiles) {
@@ -56,25 +54,5 @@ public class PdfController {
         pdfService.savePdf(formData.getDocName(), formData.getDocType(), docUri, formData.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
     }
-
-    // @GetMapping("/download/{pdfId}")
-    // public ResponseEntity<ByteArrayResource> downloadPdf(@PathVariable long pdfId) {
-    //     PdfFile pdfFile = pdfService.getPdfById(pdfId);
-
-    //     if (pdfFile == null) {
-    //         return ResponseEntity.notFound().build();
-    //     }
-
-    //     HttpHeaders httpHeaders = new HttpHeaders();
-    //     httpHeaders.setContentType(MediaType.APPLICATION_PDF);
-    //     httpHeaders.setContentDispositionFormData("attachment", pdfFile.getFileName());
-
-    //     ByteArrayResource resource = new ByteArrayResource(pdfFile.getContent());
-
-    //     return ResponseEntity.ok()
-    //             .headers(httpHeaders)
-    //             .contentLength(pdfFile.getContent().length)
-    //             .body(resource);
-    // }
 
 }

@@ -28,25 +28,17 @@ public class UserController {
         return "Welcome!";
     }
 
-    @GetMapping("/getUsers")
-    public List<User> getUsers(){
-        return userService.findAll();
-    }
-
     @PostMapping("/SignUpForm")
     public ResponseEntity<String> signup(@RequestBody User user){
-        System.out.println(user);
         try {
             userService.createUser(user); // Call separate method in userService
             return ResponseEntity.status(HttpStatus.CREATED).body("User sign up successful.");
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            System.out.println("User With Same email already exist!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage() + ": User With Same email already exist!");
         } catch (Exception e) { // Handle other potential exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        
-        // userService.saveUser(user.getName(), user.getPhoneNumber(), user.getEmail(), user.getPassword());
-        // return ResponseEntity.status(HttpStatus.CREATED).body("User sign up successful.");
     }
 
     @PostMapping("/login")
