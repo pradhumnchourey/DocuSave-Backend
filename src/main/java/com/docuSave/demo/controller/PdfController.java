@@ -54,5 +54,4 @@ public class PdfController {
         pdfService.savePdf(formData.getDocName(), formData.getDocType(), docUri, formData.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
     }
-
 }

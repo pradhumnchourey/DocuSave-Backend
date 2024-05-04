@@ -29,10 +29,7 @@ public class PdfFile {
     private String docType;
 
     private String docUri;
-    // @Lob
-    // @Column(name = "content", length = 1048576) //1 mb 
-    // private byte[] content;
-
+    
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private User user;

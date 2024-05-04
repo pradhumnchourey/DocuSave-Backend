@@ -41,15 +41,4 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PdfFile> user_files;
-
-    // public User(String name, long phoneNumber, String email, String password) {
-    //     this.name = name;
-    //     this.phoneNumber = phoneNumber;
-    //     this.email = email;
-    //     this.password = password;
-    // }
-    // public User(int userId2, String name2) {
-    //     this.userId = userId2;
-    //     this.name = name2;
-    // }
 }
