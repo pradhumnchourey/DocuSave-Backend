@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_files")
-public class PdfFile {
+public class Docs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,8 @@ public class PdfFile {
     private String docType;
 
     private String docUri;
+
+    private String category;
     
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)

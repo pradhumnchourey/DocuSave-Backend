@@ -40,5 +40,5 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<PdfFile> user_files;
+    private List<Docs> user_files;
 }

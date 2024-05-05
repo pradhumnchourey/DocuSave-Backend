@@ -13,11 +13,13 @@ public class DocList {
     private String docType;
     private String docUri;
     private int userId;
+    private String category;
 
-    public DocList(long docId, String docName, String docType, String docUri) {
+    public DocList(long docId, String docName, String docType, String docUri, String category) {
         this.docId = docId;
         this.docName = docName;
         this.docType = docType;
         this.docUri = docUri;
+        this.category=category;
     }
 }
