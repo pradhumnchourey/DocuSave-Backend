@@ -11,9 +11,6 @@ import com.docuSave.demo.model.User;
 public interface DocRepository extends JpaRepository<Docs, Long> {
     List<Docs> findByUser(User user);
 
-    // @Query("SELECT pdf FROM PdfFile pdf WHERE pdf.user.userId = :userId")
-    // List<PdfFile> findByUserId(int userId);
-
     @Query("SELECT doc FROM Docs doc WHERE doc.user.userId = :userId AND doc.category.categoryId = :categoryId")
     List<Docs> findByUserIdAndCategory(int userId, int categoryId);
 

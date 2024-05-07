@@ -21,7 +21,6 @@ public class UserService {
             throw new DataIntegrityViolationException("User with same already exists!");
         }
         String hashedPassword = passwordEncoder.encode(user.getPassword());
-        // User newUser = new User(name, phoneNumber, email, hashedPassword);
         user.setPassword(hashedPassword);
         return userRepository.save(user);
     }

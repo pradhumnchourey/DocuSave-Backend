@@ -38,19 +38,12 @@ public class DocService {
             pdfFile.setUser(user);
         else System.out.println("User not found:" + userId);
 
-        // Optional<User> user = userRepository.findById(userId);
-        // user.ifPresent(pdfFile::setUser);
-
         docRepository.save(pdfFile);
     }
 
     public Docs getPdfById(long pdfId) {
         return docRepository.findById(pdfId).orElse(null);
     }
-
-    // public List<PdfFile> getPdfByUserId(int userId) {
-    // return pdfRepository.findByUserId(userId);
-    // }
 
     public boolean deleteDocument(long docId) {
         if (docRepository.existsById(docId)) {
