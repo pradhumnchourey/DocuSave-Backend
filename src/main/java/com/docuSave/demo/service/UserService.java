@@ -1,7 +1,5 @@
 package com.docuSave.demo.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,11 +34,11 @@ public class UserService {
         return null;
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
     public User findByEmail(String string) {
         return userRepository.findByEmail(string);
+    }
+
+    public User getUserById(int userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 }

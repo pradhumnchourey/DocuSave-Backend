@@ -20,11 +20,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    
-    @GetMapping({"/","/home"})
-    public String greet(){
-        return "Welcome!";
-    }
 
     @PostMapping("/SignUpForm")
     public ResponseEntity<String> signup(@RequestBody User user){

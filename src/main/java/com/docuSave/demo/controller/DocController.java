@@ -28,31 +28,29 @@ public class DocController {
 
     @GetMapping("/documents/{userId}")
     public List<DocList> getDocs(@PathVariable int userId,
-            @RequestParam(required = false) String category,
+            @RequestParam(required = false) int categoryId,
             @RequestParam(required = false) String type) {
         if (type == null || type.isEmpty() || type.equals("all")) {
-            return fetchDocs(userId, category);
+            return fetchDocs(userId, categoryId);
         } else {
-            return fetchDocsByType(userId, category, type);
+            return fetchDocsByType(userId, categoryId, type);
         }
     }
 
-    private List<DocList> fetchDocs(int userId, String category) {
-        List<Docs> pdffiles = docService.getPdfByUserIdAndCategory(userId, category);
+    private List<DocList> fetchDocs(int userId, int categoryId) {
+        List<Docs> pdffiles = docService.getPdfByUserIdAndCategory(userId, categoryId);
         List<DocList> docLists = new ArrayList<>();
-        for (Docs pdfFile : pdffiles) {
-            docLists.add(new DocList(pdfFile.getFileId(), pdfFile.getFileName(), pdfFile.getDocType(),
-                    pdfFile.getDocUri(), pdfFile.getCategory()));
+        for (Docs doc : pdffiles) {
+            docLists.add(new DocList(doc.getDocId(), doc.getDocName(), doc.getDocType(), doc.getDocUri()));
         }
         return docLists;
     }
 
-    private List<DocList> fetchDocsByType(int userId, String category, String type) {
-        List<Docs> filteredDocs = docService.getPdfByUserIdAndCategoryAndType(userId, category, type);
+    private List<DocList> fetchDocsByType(int userId, int categoryId, String type) {
+        List<Docs> filteredDocs = docService.getPdfByUserIdAndCategoryAndType(userId, categoryId, type);
         List<DocList> docLists = new ArrayList<>();
         for (Docs doc : filteredDocs) {
-            docLists.add(new DocList(doc.getFileId(), doc.getFileName(), doc.getDocType(),
-                    doc.getDocUri(), doc.getCategory()));
+            docLists.add(new DocList(doc.getDocId(), doc.getDocName(), doc.getDocType(), doc.getDocUri()));
         }
         return docLists;
     }
@@ -74,7 +72,7 @@ public class DocController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload");
         }
         docService.savePdf(formData.getDocName(), formData.getDocType(), docUri, formData.getUserId(),
-                formData.getCategory());
+                formData.getCategoryId());
         return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
     }
 }

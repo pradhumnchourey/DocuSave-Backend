@@ -21,16 +21,18 @@ public class Docs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long fileId;
+    private long docId;
 
     @Column(nullable = false)
-    private String fileName;
+    private String docName;
 
     private String docType;
 
     private String docUri;
 
-    private String category;
+    @ManyToOne
+    @JoinColumn(name="categoryId", nullable = false)
+    private Category category;
     
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
